@@ -1,11 +1,16 @@
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
             <div className="w-8 h-8 bg-gradient-to-br from-primary to-blue-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">CM</span>
             </div>
@@ -20,12 +25,20 @@ const Navbar = () => {
           </div>
           
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" className="text-foreground">
-              Sign In
-            </Button>
-            <Button className="bg-primary hover:bg-primary/90">
-              Join Now
-            </Button>
+            {user ? (
+              <Button onClick={() => navigate('/dashboard')}>
+                Dashboard
+              </Button>
+            ) : (
+              <>
+                <Button variant="ghost" onClick={() => navigate('/auth')}>
+                  Sign In
+                </Button>
+                <Button onClick={() => navigate('/auth')}>
+                  Join Now
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
